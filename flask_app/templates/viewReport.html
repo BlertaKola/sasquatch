@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Sasquatch Websighting</title>
+</head>
+<body>
+    <h1>Sasquatch Websighting</h1>
+    <div class="d-flex flex-column-reverse align-items-end mr-3">
+        <div>
+            <a href='/dashboard' class="btn btn-info btn-lg active" role="button" aria-pressed="true">Dashboard</a>
+            <a href='/logout' class="btn btn-danger btn-lg active" role="button" aria-pressed="true">LogOut</a>
+        </div>
+        <h1>Welcome {{loggedUser.first_name}}</h1>
+    </div>
+    <div class="d-flex justify-content-around mt-5">
+        <div>
+            <h2>{{sighting.location}} on {{sighting.dateSight}}</h2>
+            <h5>What happened: {{sighting.description}}</h5>
+            <h5># of sasquatches: {{sighting.numberSasq}}</h5>
+        </div>
+        <div>
+
+                
+                    <h2>Sceptics:</h2>
+                    {% for sceptic in sceptics %}
+                        <h3>{{sceptic.first_name}}</h3>
+                    {% endfor %}
+                    {% if sighting.id not in believers %}
+                        <a href="/believe/{{sighting.id}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Believe</a>
+                    {% endif %}
+                        {% if sighting.id in believers %}
+                        <a href="/unbelieve/{{sighting.id}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Unbelieve</a>
+                    {% endif %}
+        </div>
+        </div>
+    
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Sasquatch Websighting</title>
+</head>
+<body class="bg-dark bg-gradient text-light">
+
+    <h1>Sasquatch Websighting</h1>
+    <div class="d-flex flex-column-reverse align-items-end mr-3">
+        
+        <div>
+            <a href='/new/sighting' class="btn btn-info btn-lg active" role="button" aria-pressed="true">Report a Sighting</a>
+            <a href='/logout' class="btn btn-danger btn-lg active" role="button" aria-pressed="true">LogOut</a>
+        </div>
+        <h1>Welcome {{loggedUser.first_name}}</h1>
+    </div>
+
+    {% if sightings %}
+        <h1 class="mt-5 ml-5 text-center text-warning">Reported Sightings</h1>
+        <div class="border border-1 w-50 m-auto p-4 ">
+            {% for sighting in sightings %}
+                
+                {% if sceptics.number == 0 %}
+                    <h5>Number of sceptics 0 <span class="text-info">{{sighting.location}} - {{sighting.dateSight}}</span></h5>
+                    <h5>Reported By {{sighting.creator_name}}</h5>
+                {% else %}
+                    <h5>Number of sceptics {{sceptics.number}} <span class="text-info">{{sighting.location}} - {{sighting.dateSight}}</span></h5>
+                    <h5>Reported By {{sighting.creator_name}}</h5>
+                {% endif %}
+                {% if loggedUser.id == sighting.creator_id %}
+                    <a href='/edit/{{sighting.id}}' class="btn btn-info btn-lg active" role="button" aria-pressed="true">Edit</a>
+                    <a href='/delete/{{sighting.id}}' class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Delete</a>
+                {% else %}
+                    <a href='/view/{{sighting.id}}' class="btn btn-info btn-lg active" role="button" aria-pressed="true">View</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 class="text-center text-warning">There are no sightings</h1>
+    {% endif %}
+</body>
+</html>
