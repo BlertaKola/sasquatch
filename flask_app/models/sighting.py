@@ -23,17 +23,32 @@ class Sighting:
 
     @classmethod
     def getReportByID(cls,data):
-        query = 'SELECT * FROM sightings WHERE sightings.id = %(sighting_id)s;'
+        query = 'SELECT * FROM sightings LEFT JOIN users on sightings.user_id = users.id WHERE sightings.id = %(sighting_id)s;'
         results = connectToMySQL(cls.db_name).query_db(query,data)
         return results[0]
     
-    
-
     @classmethod
     def getAllReports(cls):
         query = 'SELECT sightings.location, sightings.id, sightings.dateSight, users.first_name as creator_name, users.id as creator_id FROM sightings LEFT JOIN users ON sightings.user_id = users.id;'
         results = connectToMySQL(cls.db_name).query_db(query)
-        return results
+        reports = []
+        if results:
+            for row in results:
+                idja = str(row['id'])
+                query2 = 'SELECT id from sceptics where sceptics.sighting_id =' + idja
+                results2 = connectToMySQL(cls.db_name).query_db(query2)
+                likesNr = []
+                if results2:
+                    for row2 in results2:
+                        likesNr.append(row2)
+
+                row['likesNr'] = likesNr
+                
+                reports.append(row)
+                print(reports)
+            return reports
+        return reports
+
 
 
     @classmethod
@@ -67,6 +82,7 @@ class Sighting:
 
     @classmethod
     def getScepticsCount(cls,data):
+
         query = 'SELECT count(sceptics.id) AS number FROM sceptics LEFT JOIN sightings ON sceptics.sighting_id = sightings.id LEFT JOIN users on sceptics.user_id = users.id WHERE sceptics.user_id = %(user_id)s GROUP BY sightings.id;'
         result = connectToMySQL(cls.db_name).query_db(query,data)
         if result:

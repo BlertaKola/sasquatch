@@ -23,14 +23,9 @@
         <h1 class="mt-5 ml-5 text-center text-warning">Reported Sightings</h1>
         <div class="border border-1 w-50 m-auto p-4 ">
             {% for sighting in sightings %}
-                
-                {% if sceptics.number == 0 %}
-                    <h5>Number of sceptics 0 <span class="text-info">{{sighting.location}} - {{sighting.dateSight}}</span></h5>
+                <p>Nr of sceptics: {{sighting.likesNr|count}}</p>
+                <span class="text-info">{{sighting.location}} - {{sighting.dateSight}}</span></h5>
                     <h5>Reported By {{sighting.creator_name}}</h5>
-                {% else %}
-                    <h5>Number of sceptics {{sceptics.number}} <span class="text-info">{{sighting.location}} - {{sighting.dateSight}}</span></h5>
-                    <h5>Reported By {{sighting.creator_name}}</h5>
-                {% endif %}
                 {% if loggedUser.id == sighting.creator_id %}
                     <a href='/edit/{{sighting.id}}' class="btn btn-info btn-lg active" role="button" aria-pressed="true">Edit</a>
                     <a href='/delete/{{sighting.id}}' class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Delete</a>
